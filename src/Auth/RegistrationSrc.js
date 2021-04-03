@@ -43,7 +43,7 @@ const RegistrationSrc = ({ navigation }) => {
         password,
       };
       const response = await api.postSignup(body);
-      if (!response) throw new Error("Data not resiv");
+      if (!response) throw new Error("Data not received");
       navigation.replace("OTP Code");
       alert("hair");
 

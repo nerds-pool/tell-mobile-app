@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Pressable } from "react-native";
 import PostList from "../../components/PostList";
 import { Avatar } from 'react-native-elements';
 import { AntDesign, SimpleLineIcons } from '@expo/vector-icons';
+import Comments from '../../components/Comments'
 
 const Feeds = ({ navigation }) => {
 
@@ -26,7 +27,7 @@ const Feeds = ({ navigation }) => {
                     <AntDesign name='user' size={24} color="black" />
                 </Pressable>
 
-                <Pressable activeOpacity={0.5}>
+                <Pressable activeOpacity={0.5} onPress={()=> navigation.navigate('Add Feed')} >
                     <SimpleLineIcons name='pencil' size={24} color="black"/>
                 </Pressable>
             </View>
@@ -37,6 +38,7 @@ const Feeds = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <PostList />
+      <Comments />
     </View>
   );
 };

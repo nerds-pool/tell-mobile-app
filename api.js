@@ -1,12 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 
 const Http = axios.create({
-    baseURL: "http://192.168.43.125:8000/",
+  baseURL: "https://tell-lk.netlify.app/.netlify/functions/api/",
 });
 
 const api = {
-    postSignup: (body) => Http.post('api/auth/signup', body),
-    
-}; 
+  postSignup: (body) => Http.post("auth/signup", body),
+  postSignin: (signinbody) => Http.post("auth/signin", signinbody),
+};
 
 export default api;

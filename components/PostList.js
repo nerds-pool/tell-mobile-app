@@ -11,18 +11,22 @@ import {
 } from "react-native";
 
 import FontAwesom from "react-native-vector-icons/FontAwesome";
-import { Avatar, TouchableRipple } from "react-native-paper";
+import { Avatar, Paragraph } from "react-native-paper";
+import { Pressable } from "react-native";
+import { Constants } from "expo";
+import {
+  MenuProvider,
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu"; // 0.8.0
 
 const DATA = [
   {
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
     title: "First Item",
     name: "Kavinda Nirushana",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-    name: "Dylan Wickramasinha",
   },
 ];
 
@@ -34,32 +38,69 @@ const Item = ({}) => (
         <Text style={{ fontSize: 16, fontWeight: "bold" }}>
           Kavinda Nirushana
         </Text>
-        <Text style={{ fontSize: 8, marginTop: -4, color: "gray" }}>
+        <Text style={{ fontSize: 10, marginTop: -4, color: "gray" }}>
           10:20pm
         </Text>
       </View>
-      <View style={{ marginLeft: 130, width: 8 }}>
-        <TouchableRipple
-          onPress={() => {}}
-          style={{ justifyContent: "center", alignItems: "center" }}
-        >
-          <FontAwesom name="ellipsis-v" size={16} />
-        </TouchableRipple>
-      </View>
+
+      <MenuProvider style={styles.incontainer}>
+        <View style={{ marginTop: 20 }}>
+          <Menu>
+            <MenuTrigger>
+              <FontAwesom
+                name="ellipsis-v"
+                size={16}
+                style={{ justifyContent: "center", width: 20 }}
+              />
+            </MenuTrigger>
+            <MenuOptions>
+              <MenuOption onSelect={() => alert(`Delete`)} text="Delete" />
+            </MenuOptions>
+          </Menu>
+        </View>
+      </MenuProvider>
     </View>
     <View style={styles.postText}>
-      <Text>This is the way to complete this project</Text>
+      <Paragraph>
+        Hi this is an post
+        sfgrjgfnhtgbirfgnthnotahujaik'hyrjhnikrtgouhy'htjhnrarytijut
+      </Paragraph>
     </View>
     <View style={styles.postImage}>
-      <Image />
+      <Image
+        style={{ width: "100%", height: 250 }}
+        source={require("../Images/banner-small-garbage-day_402x-1.jpg")}
+      />
+      <View style={{ flexDirection: "row" }}>
+        <Image
+          style={{ width: "32%", height: 100, marginTop: 3 }}
+          source={require("../Images/banner-small-garbage-day_402x-1.jpg")}
+        />
+        <Image
+          style={{ width: "32%", height: 100, marginTop: 3, marginLeft: 7 }}
+          source={require("../Images/banner-small-garbage-day_402x-1.jpg")}
+        />
+        <Image
+          style={{ width: "32%", height: 100, marginTop: 3, marginLeft: 7 }}
+          source={require("../Images/banner-small-garbage-day_402x-1.jpg")}
+        />
+      </View>
     </View>
-    <View style={{ marginTop: 25 }}>
-      <Button title="UpVote" />
+    <Text style={{ fontWeight: "bold", marginVertical: 3, fontSize: 12 }}>
+      204 Upvotes
+    </Text>
+    <View style={styles.btnContainer}>
+      <Pressable style={styles.btnStyle}>
+        <Text style={{ color: "#fff", fontWeight: "bold" }}>UpVote</Text>
+      </Pressable>
+      <Pressable style={[styles.btnStyle, { marginLeft: 2 }]}>
+        <Text style={{ color: "#fff", fontWeight: "bold" }}>Comment</Text>
+      </Pressable>
     </View>
   </View>
 );
 
-export default function App() {
+export default function PostList() {
   const renderItem = ({ item }) => <Item text={item.name} />;
 
   return (
@@ -80,7 +121,7 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: "#fff",
-    padding: 20,
+    padding: 10,
     marginVertical: 8,
     marginHorizontal: 16,
   },
@@ -96,5 +137,28 @@ const styles = StyleSheet.create({
   },
   postText: {
     marginTop: 15,
+    marginLeft: 12,
+    width: "85%",
+  },
+  postImage: {
+    marginTop: 15,
+    width: "100%",
+  },
+  btnContainer: {
+    flexDirection: "row",
+    marginTop: 5,
+  },
+  btnStyle: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 179,
+    height: 40,
+    backgroundColor: "#8E0D37",
+  },
+  incontainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#fff",
+    marginLeft: 140,
   },
 });

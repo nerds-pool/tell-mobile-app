@@ -14,6 +14,8 @@ import Profile from './src/MainSrc/Profile';
 import EditProfile from './src/MainSrc/EditProfile';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feeds from './src/MainSrc/Feeds';
+import MyFeed from './src/MainSrc/MyFeed';
+import AddFeeds from './src/MainSrc/AddFeeds';
 
 
 
@@ -51,6 +53,8 @@ export default function App() {
       <Stack.Screen name="Feeds" component={Feeds} />
       <Stack.Screen name="Profile Screen" component={ProfileScreen} />
       <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
+      <Stack.Screen name="My Post" component={MyFeed} />
+      <Stack.Screen name="Add Feed" component={AddFeeds} />
     </Stack.Navigator>
   </NavigationContainer>
   );

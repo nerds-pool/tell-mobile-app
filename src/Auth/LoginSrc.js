@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { SafeAreaView, Pressable } from "react-native";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { SafeAreaView, Pressable, TextInput } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { save, getValueFor, deleteValueFor } from "../../helpers/sec-storage";
 
 const LoginSrc = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -18,6 +19,48 @@ const LoginSrc = ({ navigation }) => {
         break;
     }
   };
+
+  const handleSave = async (value) => {
+    try {
+      await save("Name", value);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const handleGet = async (key) => {
+    try {
+      await getValueFor(key);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const handleDelete = async (key) => {
+    try {
+      await deleteValueFor(key);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const handleFetch = async () => {
+    try {
+      const signinbody = {
+        email,
+        password,
+      };
+      const signinResponse = await api.postSignin(signinbody);
+      if (!signinResponse) throw new Error("Data not resiv");
+      navigation.replace("Feeds");
+      alert("Loged");
+
+      console.log("Res:", signinResponse);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={[styles.txtStyle, { fontWeight: "bold", fontSize: 46 }]}>
@@ -67,6 +110,7 @@ const LoginSrc = ({ navigation }) => {
         <TextInput
           placeholder="Password"
           secureTextEntry
+          value={password}
           style={[styles.txtInput, { marginTop: 25 }]}
           onChangeText={(text) => handleInputs(text)("pass")}
         />
@@ -77,16 +121,14 @@ const LoginSrc = ({ navigation }) => {
             { fontWeight: "bold", marginLeft: 100, marginTop: 15 },
           ]}
         >
-          Forgot Password?{" "}
-          <Text onPress={() => navigation.navigate("Forget Password")}>
-            {" "}
-            Click here
-          </Text>
+          Forgot Password?
+          <Text onPress={() => handleDelete("Name")}>Click here</Text>
         </Text>
 
         <Pressable
           style={[styles.btnStyle, { marginTop: 90 }]}
-          onPress={() => navigation.navigate("Feeds")}
+          // onLongPress={() => handleGet("Name")}
+          onPress={handleFetch}
         >
           <Text style={[styles.txtStyle, { fontWeight: "bold" }]}>Login</Text>
         </Pressable>
@@ -98,8 +140,8 @@ const LoginSrc = ({ navigation }) => {
           ]}
         >
           Don't Have an Account?
-          <Text onPress={() => navigation.navigate("Registration")}>
-            {" "}
+          <Text onPress={() => handleSave("Kavinda Nirushana")}>
+            {/*  */}
             Register Now
           </Text>
         </Text>

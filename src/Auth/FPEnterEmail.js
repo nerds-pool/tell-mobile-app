@@ -24,7 +24,7 @@ const FPEnterEmail = ({ navigation }) => {
         We just need your Registered Mobile Number to
       </Text>
       <Text style={[styles.txtStyle, { fontWeight: "bold" }]}>
-        send your password reset{" "}
+        send your password reset
       </Text>
       <TextInput
         placeholder="Email"
