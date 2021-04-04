@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feeds from './src/MainSrc/Feeds';
 import MyFeed from './src/MainSrc/MyFeed';
 import AddFeeds from './src/MainSrc/AddFeeds';
-
+import TakePhoto from './src/MainSrc/TakePhoto';
 
 
 const Stack = createStackNavigator();
@@ -55,6 +55,7 @@ export default function App() {
       <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
       <Stack.Screen name="My Post" component={MyFeed} />
       <Stack.Screen name="Add Feed" component={AddFeeds} />
+      <Stack.Screen name="Take Photo" component={TakePhoto} />
     </Stack.Navigator>
   </NavigationContainer>
   );

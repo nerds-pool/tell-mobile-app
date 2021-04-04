@@ -38,7 +38,7 @@ const Feeds = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <PostList />
-      <Comments />
+      {/* <Comments /> */}
     </View>
   );
 };

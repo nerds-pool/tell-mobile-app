@@ -7,6 +7,7 @@ const Http = axios.create({
 const api = {
   postSignup: (body) => Http.post("auth/signup", body),
   postSignin: (signinbody) => Http.post("auth/signin", signinbody),
+
 };
 
 export default api;

@@ -1,5 +1,5 @@
-import React from "react";
-import { Button } from "react-native";
+import React, {useRef} from "react";
+import RBSheet from "react-native-raw-bottom-sheet";
 import {
   SafeAreaView,
   View,
@@ -9,11 +9,9 @@ import {
   StatusBar,
   Image,
 } from "react-native";
-
 import FontAwesom from "react-native-vector-icons/FontAwesome";
-import { Avatar, Paragraph } from "react-native-paper";
+import { Avatar, Paragraph, TextInput } from "react-native-paper";
 import { Pressable } from "react-native";
-import { Constants } from "expo";
 import {
   MenuProvider,
   Menu,
@@ -21,6 +19,9 @@ import {
   MenuOption,
   MenuTrigger,
 } from "react-native-popup-menu"; // 0.8.0
+import { Button } from "react-native";
+import Comments from '../components/Comments'
+import { ScrollView } from "react-native-gesture-handler";
 
 const DATA = [
   {
@@ -91,10 +92,18 @@ const Item = ({}) => (
     </Text>
     <View style={styles.btnContainer}>
       <Pressable style={styles.btnStyle}>
-        <Text style={{ color: "#fff", fontWeight: "bold" }}>UpVote</Text>
+      <View style={{flexDirection: 'row'}}>
+      <FontAwesom name="check-circle" size={22} color="#fff" />
+        <Text style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}>UpVote</Text>
+      </View>
+      
       </Pressable>
       <Pressable style={[styles.btnStyle, { marginLeft: 2 }]}>
-        <Text style={{ color: "#fff", fontWeight: "bold" }}>Comment</Text>
+        <View style={{flexDirection: 'row'}}>
+        <FontAwesom name="comment" size={20} color="#fff"/>
+        <Text style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}>Comment</Text>
+        </View>
+      
       </Pressable>
     </View>
   </View>
@@ -102,6 +111,7 @@ const Item = ({}) => (
 
 export default function PostList() {
   const renderItem = ({ item }) => <Item text={item.name} />;
+  const refRBSheet = useRef();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -110,6 +120,31 @@ export default function PostList() {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
+      <Button title="Comment" onPress={() => refRBSheet.current.open()}/>
+      <RBSheet
+        ref={refRBSheet}
+        closeOnDragDown={true}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "transparent",
+          },
+          draggableIcon: {
+            backgroundColor: "#000"
+          },
+          container: {
+            height: '80%'
+          }
+        }}
+      >
+        <ScrollView>
+        <Comments />
+        </ScrollView>
+       <View style={{height: 50, marginBottom: 20, flexDirection: 'row', justifyContent: 'center' }}>
+         <TextInput placeholder="Add your comment"  style={{paddingLeft: 10, width: '80%', justifyContent: 'center', backgroundColor: '#fff' }}/>
+         <FontAwesom name="send" size={20} style={{marginTop: 18}} />
+       </View>
+      </RBSheet>
     </SafeAreaView>
   );
 }
