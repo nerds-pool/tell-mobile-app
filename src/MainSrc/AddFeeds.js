@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { Avatar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
-
+import api from '../../api'
 
 const AddFeeds = ({ navigation }) => {
+
+ 
+
   const [image, setImage] = useState(null);
+  const [story, setStory] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -37,6 +41,23 @@ const AddFeeds = ({ navigation }) => {
     }
   };
 
+
+  const handleFetch = async () => {
+    try {
+      const addFeedbody = {
+        story
+      };
+      const feedResponse = await api.postAddFeed(addFeedbody);
+      if (!feedResponse) throw new Error("Data not received");
+      console.log("Res:", feedResponse);
+    } catch (error) {
+      console.log(error);
+    }
+
+    navigation.navigate('OTP Code');
+  };
+
+
   return (
     <View style={styles.container}>
       <View style={styles.addpostcontainer}>
@@ -48,14 +69,16 @@ const AddFeeds = ({ navigation }) => {
           size={60}
         />
         <TextInput
+          value={story}
           style={styles.txtInput}
-          placeholder="Add your comment here"
+          placeholder="Add your story here"
           underlineColorAndroid="transparent"
-          numberOfLines={10}
+          numberOfLines={3}
          multiline={true}
+         onChangeText={(text) => setStory(text)}
         />
       </View>
-      <View>
+      <View style={{marginTop: 20, marginRight: 150}} >
         {image && (
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
         )}
@@ -72,6 +95,7 @@ const AddFeeds = ({ navigation }) => {
           name="send"
           size={30}
           style={[styles.icons, { marginLeft: "56%" }]}
+          onPress={handleFetch}
         />
       </View>
     </View>

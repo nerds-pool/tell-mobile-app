@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, Platform, Button, Image } from 'react-native'
-import { Camera, Permissions } from 'expo-camera'
+import { Camera } from 'expo-camera'
+import  Permissions from 'permission'
 
 export default class App extends React.Component {
   state = {
@@ -56,7 +57,7 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     try {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA)
+      const { status } = await Permissions.getAsync(Permissions.CAMERA)
 
       this.setState({ hasCameraPermission: status === 'granted' })
 
