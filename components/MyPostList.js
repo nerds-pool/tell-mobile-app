@@ -19,9 +19,10 @@ import {
   MenuOption,
   MenuTrigger,
 } from "react-native-popup-menu"; // 0.8.0
-import Comments from "../components/Comments";
+import Comments from "./Comments";
 import { ScrollView } from "react-native-gesture-handler";
 import {getValueFor } from "../helpers/sec-storage"
+import api from "../api";
 
 const DATA = [
   {
@@ -31,21 +32,22 @@ const DATA = [
   },
 ];
 
-// const Item = ({}) => (
-
-// );
 
 export default function PostList() {
-  // const renderItem = ({ item }) => <Item text={item.name} />;
-  const refRBSheet = useRef();
 
   useEffect(() => {
     (async () => {
       try {
         const userId = await getValueFor("userId");
+        const postUserData = await api.get.getPostList(userId);
+        if (!postUserData) {
+          throw new Error("Something Went Worng");
+        }
         console.log("UserId", userId);
-      } catch (error) {
+        console.log("Posted Data: ", postUserData.data);
         
+      } catch (error) {
+        console.log(error.message)
       }
     })();
   }, [])
@@ -68,7 +70,25 @@ export default function PostList() {
                 </Text>
               </View>
 
-              
+              <MenuProvider style={styles.incontainer}>
+                <View style={{ marginTop: 20 }}>
+                  <Menu>
+                    <MenuTrigger>
+                      <FontAwesom
+                        name="ellipsis-v"
+                        size={16}
+                        style={{ justifyContent: "center", width: 20 }}
+                      />
+                    </MenuTrigger>
+                    <MenuOptions>
+                      <MenuOption
+                        onSelect={() => alert(`Delete`)}
+                        text="Delete"
+                      />
+                    </MenuOptions>
+                  </Menu>
+                </View>
+              </MenuProvider>
             </View>
             <View style={styles.postText}>
               <Paragraph>
@@ -83,76 +103,11 @@ export default function PostList() {
               />
               
             </View>
-            <Text
-              style={{ fontWeight: "bold", marginVertical: 3, fontSize: 12 }}
-            >
-              204 Upvotes
-            </Text>
-            <View style={styles.btnContainer}>
-              <Pressable style={styles.btnStyle}>
-                <View style={{ flexDirection: "row" }}>
-                  <FontAwesom name="check-circle" size={22} color="#fff" />
-                  <Text
-                    style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}
-                  >
-                    UpVote
-                  </Text>
-                </View>
-              </Pressable>
-              <Pressable style={[styles.btnStyle, { marginLeft: 2 }]} onPress={() => refRBSheet.current.open()}  >
-                <View style={{ flexDirection: "row" }}>
-                  <FontAwesom name="comment" size={20} color="#fff" />
-                  <Text
-                    style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}
-                  >
-                    Comment
-                  </Text>
-                </View>
-              </Pressable>
-            </View>
+            <View style={{padding: 10}}></View>
           </View>
         )}
       />
-      <RBSheet
-        ref={refRBSheet}
-        closeOnDragDown={true}
-        closeOnPressMask={false}
-        openDuration={300}
-        customStyles={{
-          wrapper: {
-            backgroundColor: "transparent",
-          },
-          draggableIcon: {
-            backgroundColor: "#000",
-          },
-          container: {
-            height: "80%",
-          },
-        }}
-      >
-        <ScrollView>
-          <Comments />
-        </ScrollView>
-        <View
-          style={{
-            height: 50,
-            marginBottom: 20,
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
-          <TextInput
-            placeholder="Add your comment"
-            style={{
-              paddingLeft: 10,
-              width: "80%",
-              justifyContent: "center",
-              backgroundColor: "#fff",
-            }}
-          />
-          <FontAwesom name="send" size={20} style={{ marginTop: 18 }} />
-        </View>
-      </RBSheet>
+    
       
     </SafeAreaView>
   );

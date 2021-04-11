@@ -11,6 +11,10 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesom from "react-native-vector-icons/FontAwesome";
 
 export default function Profile({ navigation }) {
+
+  React.useEffect(()=>{
+    console.log(navigation);
+  },[navigation])
   return (
     <SafeAreaView style={styles.container}>
       

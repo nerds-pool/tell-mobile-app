@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { SafeAreaView, Pressable, TextInput } from "react-native";
+import { SafeAreaView, Pressable, TextInput, Alert } from "react-native";
 import { StyleSheet, Text, View } from "react-native";
 import { save, getValueFor, deleteValueFor } from "../../helpers/sec-storage";
+import api from "../../api"
 
 const LoginSrc = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -20,29 +21,21 @@ const LoginSrc = ({ navigation }) => {
     }
   };
 
-  const handleSave = async (value) => {
-    try {
-      await save("Name", value);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
+  // const handleGet = async (key) => {
+  //   try {
+  //     await getValueFor(key);
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  //};
 
-  const handleGet = async (key) => {
-    try {
-      await getValueFor(key);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
-  const handleDelete = async (key) => {
-    try {
-      await deleteValueFor(key);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
+  // const handleDelete = async (key) => {
+  //   try {
+  //     await deleteValueFor(key);
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  // };
 
   const handleFetch = async () => {
     try {
@@ -50,14 +43,28 @@ const LoginSrc = ({ navigation }) => {
         email,
         password,
       };
-      const signinResponse = await api.postSignin(signinbody);
-      if (!signinResponse) throw new Error("Data not resiv");
-      navigation.replace("Feeds");
-      alert("Loged");
+      const signinResponse = await api.post.postSignin(signinbody);
+      if (!signinResponse) throw new Error("Data not received");
+      if(!signinResponse.data.success) {
+        return;
+      }
 
-      console.log("Res:", signinResponse);
+      const data = signinResponse.data.result
+
+      await save("userId", data.id);
+      await save("signToken", data.signToken);
+      await save("refToken", data.refToken);
+
+      navigation.replace("Feeds");
     } catch (error) {
-      console.log(error);
+      Alert.alert("Sign-in Failed!", "Email or password is invalid...", [
+        {
+          text: "Okay",
+          style: "destructive"
+        }
+      ], {
+        cancelable: false
+      })
     }
   };
 

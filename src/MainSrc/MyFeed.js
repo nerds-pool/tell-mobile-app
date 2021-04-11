@@ -1,11 +1,11 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-
+import MyPostList from '../../components/MyPostList'
 
 const MyFeed = () => {
     return (
-        <View>
-            <Text>My Feeds</Text>
+        <View style={styles.containter}>
+            <MyPostList />
             
         </View>
     )
@@ -13,4 +13,9 @@ const MyFeed = () => {
 
 export default MyFeed
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    containter: {
+        flex: 1
+
+    }
+})

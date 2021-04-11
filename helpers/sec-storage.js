@@ -31,6 +31,7 @@ export const getValueFor = async (key) => {
     let result = await SecureStore.getItemAsync(key);
     if (result) {
       console.log("Found : " + result);
+      return result
     } else {
       console.log("Result Not Found");
     }

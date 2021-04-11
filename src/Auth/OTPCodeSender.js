@@ -7,17 +7,45 @@ import {
   Pressable,
   View,
 } from "react-native";
+import api from "../../api";
 
-const OTPCodeSender = ({ navigation }) => {
+const OTPCodeSender = ({ navigation, route }) => {
   let textInput = useRef(null);
 
   const lenghtInput = 6;
 
   const [internalVal, setInternalVal] = useState("");
+  const [params, setParams] = useState(route.params);
 
   const onChangeText = (val) => {
     setInternalVal(val);
   };
+
+  const handleOtpCheck = async () => {
+    try {
+      const isValid = params.otp === internalVal.toString();
+      console.log("isValid", isValid);
+      if (!isValid) {
+        alert("Otp is not valid");
+        return;
+      }
+
+      const body = {
+        signupToken: params.token,
+      };
+
+      const response = await api.post.postActivate(body);
+      if (!response) throw new Error("Account activation failed");
+      navigation.replace("Login");
+    } catch (error) {
+      console.log(error);
+      alert("Activation failed", error.response.message ?? error.messge)
+    }
+  };
+
+  useEffect(() => {
+    setParams(route.params);
+  }, [route]);
 
   useEffect(() => {
     textInput.focus();
@@ -67,9 +95,16 @@ const OTPCodeSender = ({ navigation }) => {
           {Array(lenghtInput)
             .fill()
             .map((data, index) => (
-              <View key={index} style={[styles.cellView, {
-                  borderBottomColor: index === internalVal.length ? '#000' : '#fff'
-              }]}>
+              <View
+                key={index}
+                style={[
+                  styles.cellView,
+                  {
+                    borderBottomColor:
+                      index === internalVal.length ? "#000" : "#fff",
+                  },
+                ]}
+              >
                 <Text style={styles.cellText} onPress={() => textInput.focus()}>
                   {internalVal && internalVal.length > 0
                     ? internalVal[index]
@@ -82,7 +117,7 @@ const OTPCodeSender = ({ navigation }) => {
 
       <Pressable
         style={[styles.btnStyle, { marginTop: "20%" }]}
-        onPress={() => navigation.navigate("Feeds")}
+        onPress={handleOtpCheck}
       >
         <Text style={[styles.txtStyle, { fontWeight: "bold" }]}>Next</Text>
       </Pressable>
@@ -140,6 +175,6 @@ const styles = StyleSheet.create({
   cellText: {
     textAlign: "center",
     fontSize: 16,
-    color: '#fff'
+    color: "#fff",
   },
 });

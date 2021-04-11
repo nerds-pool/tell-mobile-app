@@ -34,25 +34,28 @@ const RegistrationSrc = ({ navigation }) => {
   };
 
   const handleFetch = async () => {
-    // try {
-    //   const body = {
-    //     firstName,
-    //     lastName,
-    //     email,
-    //     contact,
-    //     password,
-    //   };
-    //   const response = await api.postSignup(body);
-    //   if (!response) throw new Error("Data not received");
-    //   navigation.replace("OTP Code");
-    //   alert("hair");
+    try {
+      const body = {
+        firstName,
+        lastName,
+        email,
+        contact,
+        password,
+      };
+      const response = await api.post.postSignup(body);
+      if (!response) throw new Error("Data not received");
+      if(!response.data.success) {
+        alert("Sign up failed", response.data.msg);
+        return;
+      }
+      console.log("Res:", response.data);
+      navigation.replace("OTP Code", {otp: response.data.result.otp, token:response.data.result.signupToken });
+      
+    } catch (error) {
+      console.log(error);
+    }
 
-    //   console.log("Res:", response);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
-    navigation.navigate('OTP Code');
+    //navigation.navigate('OTP Code');
   };
 
 
