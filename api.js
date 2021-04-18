@@ -59,6 +59,7 @@ const api = {
     getPostList: (userId) => Http.get(`/complaints/get/all/${userId}`),
     getUserPostList: (userId) => Http.get(`/complaints/${userId}`),
     getComments: () => Http.get(),
+    filterData: () => Http.get("/complaints/meta"),
   },
 
   put: {},
