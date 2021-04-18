@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 import { Pressable } from "react-native";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import api from "../../api";
@@ -7,6 +7,10 @@ import api from "../../api";
 const RegistrationSrc = ({ navigation }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [postal, setPostal] = useState("");
+  const [district, setDistrict] = useState("");
   const [contact, setContact] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,6 +22,18 @@ const RegistrationSrc = ({ navigation }) => {
         break;
       case "LN":
         setLastName(inputText);
+        break;
+      case "AD":
+        setAddress(inputText);
+        break;
+      case "CT":
+        setCity(inputText);
+        break;
+      case "PO":
+        setPostal(inputText);
+        break;
+      case "DT":
+        setDistrict(inputText);
         break;
       case "CN":
         setContact(inputText);
@@ -33,24 +49,32 @@ const RegistrationSrc = ({ navigation }) => {
     }
   };
 
-  const handleFetch = async () => {
+  const handleSubmit = async () => {
     try {
       const body = {
         firstName,
         lastName,
-        email,
+        address: {
+          line: address,
+          city: city.toUpperCase(),
+          postal: postal.toString(),
+          district: district.toUpperCase(),
+        },
         contact,
+        email: email.toLowerCase(),
         password,
       };
       const response = await api.post.postSignup(body);
       if (!response) throw new Error("Data not received");
-      if(!response.data.success) {
+      if (!response.data.success) {
         alert("Sign up failed", response.data.msg);
         return;
       }
       console.log("Res:", response.data);
-      navigation.replace("OTP Code", {otp: response.data.result.otp, token:response.data.result.signupToken });
-      
+      navigation.replace("OTP Code", {
+        otp: response.data.result.otp,
+        token: response.data.result.signupToken,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -58,10 +82,12 @@ const RegistrationSrc = ({ navigation }) => {
     //navigation.navigate('OTP Code');
   };
 
-
-
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      style={{ flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}
+    >
       <Text style={[styles.txtStyle, { fontWeight: "bold", fontSize: 46 }]}>
         Tell
       </Text>
@@ -76,7 +102,6 @@ const RegistrationSrc = ({ navigation }) => {
             fontWeight: "bold",
             fontSize: 32,
             marginTop: 20,
-            marginRight: "40%",
           },
         ]}
       >
@@ -91,32 +116,55 @@ const RegistrationSrc = ({ navigation }) => {
           marginTop: "12%",
         }}
       >
-        <View style={[styles.input]}>
-          <TextInput
-            placeholder="First Name"
-            autoFocus
-            style={[styles.txtInput, { width: 160 }]}
-            value={firstName}
-            onChangeText={(text) => handleInputs(text)("FN")}
-          />
-          <TextInput
-            placeholder="Last Name"
-            autoFocus
-            style={[styles.txtInput, { width: 160, marginLeft: 10 }]}
-            value={lastName}
-            onChangeText={(text) => handleInputs(text)("LN")}
-          />
-        </View>
+        <TextInput
+          placeholder="First Name"
+          autoFocus
+          style={[styles.txtInput]}
+          value={firstName}
+          onChangeText={(text) => handleInputs(text)("FN")}
+        />
+        <TextInput
+          placeholder="Last Name"
+          style={[styles.txtInput, { marginTop: 20 }]}
+          value={lastName}
+          onChangeText={(text) => handleInputs(text)("LN")}
+        />
 
+        <TextInput
+          placeholder="Address"
+          style={[styles.txtInput, { marginTop: 20 }]}
+          value={address}
+          onChangeText={(text) => handleInputs(text)("AD")}
+        />
+        <TextInput
+          placeholder="City"
+          style={[styles.txtInput, { marginTop: 20 }]}
+          value={city}
+          onChangeText={(text) => handleInputs(text)("CT")}
+        />
+        <TextInput
+          placeholder="Postal"
+          style={[styles.txtInput, { marginTop: 20 }]}
+          keyboardType="numeric"
+          value={postal}
+          onChangeText={(text) => handleInputs(text)("PO")}
+        />
+        <TextInput
+          placeholder="District"
+          style={[styles.txtInput, { marginTop: 20 }]}
+          value={district}
+          onChangeText={(text) => handleInputs(text)("DT")}
+        />
         <TextInput
           placeholder="Contact"
           style={[styles.txtInput, { marginTop: 20 }]}
-          keyboardType="name-phone-pad"
+          keyboardType="phone-pad"
           value={contact}
           onChangeText={(text) => handleInputs(text)("CN")}
         />
         <TextInput
           placeholder="Email"
+          keyboardType="email-address"
           style={[styles.txtInput, { marginTop: 20 }]}
           value={email}
           onChangeText={(text) => handleInputs(text)("email")}
@@ -138,8 +186,8 @@ const RegistrationSrc = ({ navigation }) => {
 
         <Pressable
           style={[styles.btnStyle, { marginTop: 50 }]}
-          //onPress={handleFetch}
-          onPress={()=> navigation.navigate("OTP Code")}
+          onPress={handleSubmit}
+          // onPress={() => navigation.navigate("OTP Code")}
         >
           <Text style={[styles.txtStyle, { fontWeight: "bold" }]}>
             Register
@@ -151,7 +199,7 @@ const RegistrationSrc = ({ navigation }) => {
           <Text onPress={() => navigation.navigate("Login")}> Login</Text>
         </Text>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -159,11 +207,11 @@ export default RegistrationSrc;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#EC7500",
-    marginTop: -20,
+    paddingTop: 20,
   },
   btnStyle: {
     width: 300,
