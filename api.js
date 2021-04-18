@@ -58,11 +58,14 @@ const api = {
   get: {
     getPostList: (userId) => Http.get(`/complaints/get/all/${userId}`),
     getUserPostList: (userId) => Http.get(`/complaints/get/my/${userId}`),
-    getComments: () => Http.get(),
+    getReport: () => Http.get("/complaints/report"),
     filterData: () => Http.get("/complaints/meta"),
   },
 
-  put: {},
+  patch: {
+    upvote: (body) => Http.patch("/complaints/update/upvote", body),
+    comment: (body) => Http.patch("/complaints/update/comment", body),
+  },
 
   delete: {},
 };

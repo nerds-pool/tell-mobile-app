@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { Pressable } from "react-native";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import api from "../../api";
@@ -78,8 +78,6 @@ const RegistrationSrc = ({ navigation }) => {
     } catch (error) {
       console.log(error);
     }
-
-    //navigation.navigate('OTP Code');
   };
 
   return (
@@ -187,7 +185,6 @@ const RegistrationSrc = ({ navigation }) => {
         <Pressable
           style={[styles.btnStyle, { marginTop: 50 }]}
           onPress={handleSubmit}
-          // onPress={() => navigation.navigate("OTP Code")}
         >
           <Text style={[styles.txtStyle, { fontWeight: "bold" }]}>
             Register

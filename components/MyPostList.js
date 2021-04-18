@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -7,37 +7,45 @@ import {
   Text,
   Image,
 } from "react-native";
-import FontAwesom from "react-native-vector-icons/FontAwesome";
-import { Avatar, Paragraph } from "react-native-paper";
-import { Pressable } from "react-native";
+import { Paragraph } from "react-native-paper";
 import { getValueFor } from "../helpers/sec-storage";
 import api from "../api";
 
 export default function PostList() {
-  const refRBSheet = useRef();
   const [postsData, setPostsData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [rerender, setRerender] = useState(0);
 
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const userId = await getValueFor("userId");
         const postUserData = await api.get.getUserPostList(userId);
         if (!postUserData) {
           throw new Error("Something Went Worng");
         }
         setPostsData([...postUserData.data.result]);
-
-        console.log("Post list", postUserData.data.result);
       } catch (error) {
         console.log(error.message);
+      } finally {
+        setLoading(false);
       }
     })();
-  }, []);
+  }, [rerender]);
+
+  const forceUpdate = () => {
+    setRerender((prevState) => prevState + 1);
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.item}>
+      <View style={styles.postText}>
+        <Paragraph style={styles.postTitle}>
+          {item.title ?? "Add your story here"}
+        </Paragraph>
+      </View>
       <View style={styles.infoContainter}>
-        <Avatar.Image size={40}></Avatar.Image>
         <View style={styles.txtInfoContainter}>
           <Text style={{ fontSize: 16, fontWeight: "bold" }}>
             {`${item.owner.firstName} ${item.owner.lastName} ` ?? "Name"}
@@ -49,11 +57,7 @@ export default function PostList() {
           </Text>
         </View>
       </View>
-      <View style={styles.postText}>
-        <Paragraph style={styles.postTitle}>
-          {item.title ?? "Add your story here"}
-        </Paragraph>
-      </View>
+
       <View style={styles.postText}>
         <Paragraph>{item.content ?? "Add your story here"}</Paragraph>
       </View>
@@ -103,27 +107,6 @@ export default function PostList() {
           </Text>
         </View>
       </View>
-      <View style={styles.btnContainer}>
-        <Pressable style={styles.btnStyle}>
-          <View style={{ flexDirection: "row" }}>
-            <FontAwesom name="check-circle" size={22} color="#fff" />
-            <Text style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}>
-              UpVote
-            </Text>
-          </View>
-        </Pressable>
-        <Pressable
-          style={[styles.btnStyle, { marginLeft: 2 }]}
-          onPress={() => refRBSheet.current.open()}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <FontAwesom name="comment" size={20} color="#fff" />
-            <Text style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}>
-              Comment
-            </Text>
-          </View>
-        </Pressable>
-      </View>
     </View>
   );
 
@@ -133,6 +116,8 @@ export default function PostList() {
         data={postsData}
         renderItem={(itemData) => renderItem(itemData)}
         keyExtractor={(item, index) => index.toString()}
+        refreshing={loading}
+        onRefresh={forceUpdate}
       />
     </SafeAreaView>
   );
@@ -141,7 +126,6 @@ export default function PostList() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: StatusBar.currentHeight || 0,
   },
   item: {
     backgroundColor: "#fff",
@@ -157,7 +141,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   txtInfoContainter: {
-    marginLeft: 7,
+    marginLeft: 12,
+    marginTop: 20,
   },
   postTitle: {
     marginTop: 10,

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SafeAreaView, Pressable, TextInput, Alert } from "react-native";
 import { StyleSheet, Text, View } from "react-native";
 import { save, getValueFor, deleteValueFor } from "../../helpers/sec-storage";
-import api from "../../api"
+import api from "../../api";
 
 const LoginSrc = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -45,11 +45,11 @@ const LoginSrc = ({ navigation }) => {
       };
       const signinResponse = await api.post.postSignin(signinbody);
       if (!signinResponse) throw new Error("Data not received");
-      if(!signinResponse.data.success) {
+      if (!signinResponse.data.success) {
         return;
       }
 
-      const data = signinResponse.data.result
+      const data = signinResponse.data.result;
 
       await save("userId", data.id);
       await save("signToken", data.signToken);
@@ -57,14 +57,19 @@ const LoginSrc = ({ navigation }) => {
 
       navigation.replace("Feeds");
     } catch (error) {
-      Alert.alert("Sign-in Failed!", "Email or password is invalid...", [
+      Alert.alert(
+        "Sign-in Failed!",
+        "Email or password is invalid...",
+        [
+          {
+            text: "Okay",
+            style: "destructive",
+          },
+        ],
         {
-          text: "Okay",
-          style: "destructive"
+          cancelable: false,
         }
-      ], {
-        cancelable: false
-      })
+      );
     }
   };
 
@@ -84,18 +89,13 @@ const LoginSrc = ({ navigation }) => {
             fontWeight: "bold",
             fontSize: 32,
             marginTop: 20,
-            marginRight: "20%",
+            // marginRight: "20%",
           },
         ]}
       >
         Welcome back!
       </Text>
-      <Text
-        style={[
-          styles.txtStyle,
-          { fontWeight: "bold", fontSize: 24, marginRight: "45%" },
-        ]}
-      >
+      <Text style={[styles.txtStyle, { fontWeight: "bold", fontSize: 24 }]}>
         Login Now
       </Text>
 
@@ -118,7 +118,7 @@ const LoginSrc = ({ navigation }) => {
           placeholder="Password"
           secureTextEntry
           value={password}
-          style={[styles.txtInput, { marginTop: 25 }]}
+          style={[styles.txtInput, { marginTop: 15 }]}
           onChangeText={(text) => handleInputs(text)("pass")}
         />
 
@@ -129,7 +129,10 @@ const LoginSrc = ({ navigation }) => {
           ]}
         >
           Forgot Password?
-          <Text onPress={() => navigation.navigate("Forget Password")}>Click here</Text>
+          <Text onPress={() => navigation.navigate("Forget Password")}>
+            {" "}
+            Click here
+          </Text>
         </Text>
 
         <Pressable
@@ -147,9 +150,8 @@ const LoginSrc = ({ navigation }) => {
           ]}
         >
           Don't Have an Account?
-          <Text onPress={() => handleSave("Register")}>
-            {/*  */}
-            Register Now
+          <Text onPress={() => navigation.navigate("Registration")}>
+            {" Register Now"}
           </Text>
         </Text>
       </View>
@@ -177,7 +179,7 @@ const styles = StyleSheet.create({
   txtInput: {
     backgroundColor: "#fff",
     width: "80%",
-    height: 40,
+    height: 50,
     padding: 10,
   },
   txtStyle: {

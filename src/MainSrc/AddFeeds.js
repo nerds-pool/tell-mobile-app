@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   ScrollView,
   Image,
@@ -15,7 +14,7 @@ import * as ImagePicker from "expo-image-picker";
 import api from "../../api";
 import { getValueFor } from "../../helpers/sec-storage";
 
-const { width: WINDOW_WIDTH, height: WINDOW_HEIGHT } = Dimensions.get("window");
+const { width: WINDOW_WIDTH } = Dimensions.get("window");
 
 const AddFeeds = ({ navigation }) => {
   const [filterData, setFilterData] = useState({
@@ -65,6 +64,7 @@ const AddFeeds = ({ navigation }) => {
     })();
   }, []);
 
+  // FIXME: Uploaded image currupted error!!!
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,

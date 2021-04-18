@@ -39,7 +39,7 @@ const OTPCodeSender = ({ navigation, route }) => {
       navigation.replace("Login");
     } catch (error) {
       console.log(error);
-      alert("Activation failed", error.response.message ?? error.messge)
+      alert("Activation failed", error.response.message ?? error.messge);
     }
   };
 

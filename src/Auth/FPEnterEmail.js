@@ -1,7 +1,6 @@
 import React from "react";
 import { SafeAreaView } from "react-native";
 import { StyleSheet, Text, Pressable, TextInput } from "react-native";
-import { Icon } from "react-native-vector-icons";
 
 const FPEnterEmail = ({ navigation }) => {
   return (
@@ -28,7 +27,6 @@ const FPEnterEmail = ({ navigation }) => {
       </Text>
       <TextInput
         placeholder="Email"
-        
         style={[styles.txtInput, { marginTop: 75 }]}
       />
 

@@ -1,7 +1,7 @@
-import React from 'react'
-import { StyleSheet, Text, View, Platform, Button, Image } from 'react-native'
-import { Camera } from 'expo-camera'
-import  Permissions from 'permission'
+import React from "react";
+import { StyleSheet, View, Platform, Button, Image } from "react-native";
+import { Camera } from "expo-camera";
+import Permissions from "permission";
 
 export default class App extends React.Component {
   state = {
@@ -12,8 +12,8 @@ export default class App extends React.Component {
     zoom: 0,
     whiteBalance: Camera.Constants.WhiteBalance.auto,
     focusDepth: 0,
-    ratio: '16:9',
-  }
+    ratio: "16:9",
+  };
 
   render() {
     const {
@@ -24,17 +24,17 @@ export default class App extends React.Component {
       whiteBalance,
       focusDepth,
       photo,
-    } = this.state
+    } = this.state;
 
     if (!hasCameraPermission) {
-      return <View style={styles.container} />
+      return <View style={styles.container} />;
     }
 
     return (
       <View style={styles.container}>
         <Camera
           style={styles.camera}
-          ref={ref => (this._cameraInstance = ref)}
+          ref={(ref) => (this._cameraInstance = ref)}
           type={type}
           flashMode={flashMode}
           zoom={zoom}
@@ -52,53 +52,51 @@ export default class App extends React.Component {
           {photo && <Image style={styles.photo} source={photo} />}
         </View>
       </View>
-    )
+    );
   }
 
   async componentDidMount() {
     try {
-      const { status } = await Permissions.getAsync(Permissions.CAMERA)
+      const { status } = await Permissions.getAsync(Permissions.CAMERA);
 
-      this.setState({ hasCameraPermission: status === 'granted' })
+      this.setState({ hasCameraPermission: status === "granted" });
 
-      if (status !== 'granted') {
-        alert('Hey! You might want to enable Camera in your phone settings.')
+      if (status !== "granted") {
+        alert("Hey! You might want to enable Camera in your phone settings.");
       }
     } catch (err) {
-      console.log('err', err)
+      console.log("err", err);
     }
 
-    if (Platform.OS === 'android') {
+    if (Platform.OS === "android") {
       try {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
-        this.setState({ hasCameraPermission: status === 'granted' })
+        this.setState({ hasCameraPermission: status === "granted" });
 
-        if (status !== 'granted') {
-          alert('Hey! You might want to enable Camera in your phone settings.')
+        if (status !== "granted") {
+          alert("Hey! You might want to enable Camera in your phone settings.");
         }
       } catch (err) {
-        console.log('err', err)
+        console.log("err", err);
       }
     }
   }
 
   _takePictureButtonPressed = async () => {
     if (this._cameraInstance) {
-      // console.log('')
+      const photo = await this._cameraInstance.takePictureAsync();
 
-      const photo = await this._cameraInstance.takePictureAsync()
-
-      this.setState({ photo })
+      this.setState({ photo });
     }
-  }
+  };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
-    position: 'relative',
+    backgroundColor: "black",
+    position: "relative",
   },
 
   camera: {
@@ -106,22 +104,22 @@ const styles = StyleSheet.create({
   },
 
   controls: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 10,
     bottom: 0,
     left: 0,
     right: 0,
     height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   photo: {
     width: 100,
     height: 100,
-    position: 'absolute',
+    position: "absolute",
     right: 0,
     bottom: 0,
     top: 0,
   },
-})
+});

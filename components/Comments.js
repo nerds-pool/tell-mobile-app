@@ -1,73 +1,83 @@
-import React, {useState, useEffect} from "react";
-import {
-  SafeAreaView,
-  View,
-  FlatList,
-  StyleSheet,
-  Text,
-  StatusBar,
-} from "react-native";
-import { Avatar, Paragraph } from "react-native-paper";
+import React, { useState, useEffect } from "react";
+import { SafeAreaView, View, FlatList, StyleSheet, Text } from "react-native";
+import { Paragraph, TextInput } from "react-native-paper";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import api from "../api";
+import { getValueFor } from "../helpers/sec-storage";
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
+const CommentsComp = ({ complaintId, comments, onUpdate }) => {
+  const [newComment, setNewComment] = useState();
+  const [commentData, setCommentData] = useState(comments);
 
-];
+  const handlePostComment = async (complaintId) => {
+    try {
+      const userId = await getValueFor("userId");
+      const body = {
+        userId,
+        complaintId,
+        content: newComment,
+      };
+      const response = await api.patch.comment(body);
+      if (response && !response.data.success)
+        throw new Error(response.data.msg);
+      setNewComment("");
+      onUpdate();
+    } catch (error) {
+      console.log("Error at post comment ", error.response ?? error.message);
+    }
+  };
 
-
-const App = () => {
-
-  
-  const[userComments ,setUserComments] = useState([]);
-
-  const renderItem = ({ item }) =>  (
+  const renderItem = ({ item }) => (
     <View style={styles.item}>
       <View style={{ flexDirection: "row" }}>
-        <Avatar.Image size={40}></Avatar.Image>
         <View style={styles.infoContainer}>
-          <Text>{item.firstName ?? "Name"}</Text>
-          <Text style={{ fontSize: 10, marginTop: -4, color: "gray" }}>
-          {`Updated At: ${new Date(item.updatedAt).getFullYear()}/${
-                new Date(item.updatedAt).getMonth() + 1
-              }/${new Date(item.updatedAt).getDate()}`}
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+            {`${item.commentor.firstName} ${item.commentor.lastName}` ?? "Name"}
           </Text>
         </View>
       </View>
       <View style={styles.comment}>
-        <Paragraph>{item.comment}</Paragraph>
+        <Paragraph>{item.content}</Paragraph>
       </View>
     </View>
   );
 
   useEffect(() => {
-    async function fetchComments() {
-      try {
-        const comments = await api.get.getComments();
-        if (!comments) {
-          throw new Error("Something Went Worng");
-        }
-        setUserComments([...comments.data.result]);
-        console.log("Res: ", comments.data);
-        return comments;
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchComments();
-  }, []);
+    setCommentData([...comments]);
+  }, [comments]);
 
-  
   return (
-    
     <SafeAreaView style={styles.container}>
+      <View
+        style={{
+          height: 50,
+          marginBottom: 20,
+          marginHorizontal: 10,
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <TextInput
+          placeholder="Start typing here to post a comment..."
+          value={newComment}
+          style={{
+            width: "80%",
+            justifyContent: "center",
+            backgroundColor: "#fff",
+          }}
+          onChangeText={(text) => setNewComment(text)}
+        />
+        <FontAwesome
+          name="send"
+          size={20}
+          style={{ marginTop: 18 }}
+          onPress={() => handlePostComment(complaintId)}
+        />
+      </View>
       <FlatList
-        data={DATA}
+        data={commentData}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
       />
     </SafeAreaView>
   );
@@ -75,22 +85,21 @@ const App = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: StatusBar.currentHeight,
-    
+    marginTop: 10,
   },
   item: {
-    backgroundColor: "#fff",
-    padding: 5,
-    marginVertical: 1,
+    backgroundColor: "#edede8",
     marginHorizontal: 16,
+    marginTop: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 10,
   },
-  infoContainer: {
-    marginLeft: 8,
-  },
+  infoContainer: {},
   comment: {
-    marginLeft: 62,
+    marginLeft: 5,
     width: "75%",
   },
 });
 
-export default App;
+export default CommentsComp;
