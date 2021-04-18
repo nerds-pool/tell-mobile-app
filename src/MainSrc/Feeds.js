@@ -37,7 +37,7 @@ const Feeds = ({ navigation }) => {
           
           <Pressable
             activeOpacity={0.5}
-            onPress={() => navigation.navigate("My Post")}
+            onPress={() => navigation.navigate("My Posts")}
           >
             <AntDesign name="filetext1" size={24} color="black" />
           </Pressable>

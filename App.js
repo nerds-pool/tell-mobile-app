@@ -94,7 +94,7 @@ function MainNavigator() {
         <Stack.Screen name="Feeds" component={Feeds} />
         <Stack.Screen name="Profile Screen" component={ProfileScreen} />
         <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
-        <Stack.Screen name="My Post" component={MyFeed} />
+        <Stack.Screen name="My Posts" component={MyFeed} />
         <Stack.Screen name="Add Feed" component={AddFeeds} />
         
       </Stack.Navigator>
