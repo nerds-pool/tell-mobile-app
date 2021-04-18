@@ -134,8 +134,8 @@ const LoginSrc = ({ navigation }) => {
 
         <Pressable
           style={[styles.btnStyle, { marginTop: 90 }]}
-          //onPress={handleFetch}
-          onPress={()=> navigation.navigate("Feeds")}
+          onPress={handleFetch}
+          // onPress={()=> navigation.navigate("Feeds")}
         >
           <Text style={[styles.txtStyle, { fontWeight: "bold" }]}>Login</Text>
         </Pressable>

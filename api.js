@@ -1,5 +1,5 @@
 import axios from "axios";
-import {getValueFor, save } from "./helpers/sec-storage"
+import { getValueFor, save } from "./helpers/sec-storage";
 
 const Http = axios.create({
   //  baseURL: "https://tell-lk.netlify.app/.netlify/functions/api",
@@ -12,7 +12,6 @@ Http.interceptors.request.use(
   async (config) => {
     const signToken = await getValueFor("signToken");
     if (signToken) {
-      console.log("SignToken at request interceptor:", signToken);
       config.headers["Authorization"] = `Bearer ${signToken}`;
     }
     return config;
@@ -27,14 +26,13 @@ Http.interceptors.response.use(
     console.log("Error at response interceptor:", error);
     const originalReq = error.config;
     let refToken = await getValueFor("refToken");
-    console.log("refToken at response interceptor:", refToken);
 
     if (refToken && error.response.status === 401 && !originalReq._retry) {
       originalReq._retry = true;
       const res = await Http.post("/auth/refresh", {
         refreshToken: refToken,
       });
-      
+
       if (res.status === 200) {
         await save("signToken", res.data.result.signToken);
         await save("refToken", res.data.result.refToken);
@@ -44,7 +42,6 @@ Http.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 
 const api = {
   post: {

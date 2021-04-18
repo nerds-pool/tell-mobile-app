@@ -14,7 +14,8 @@ import { Avatar, Paragraph, TextInput } from "react-native-paper";
 import { Pressable } from "react-native";
 import Comments from "../components/Comments";
 import { ScrollView } from "react-native-gesture-handler";
-import {getValueFor } from "../helpers/sec-storage"
+import { getValueFor } from "../helpers/sec-storage";
+import api from "../api";
 
 const DATA = [
   {
@@ -24,12 +25,10 @@ const DATA = [
   },
 ];
 
-
 export default function PostList() {
-  
-  const[comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const refRBSheet = useRef();
-  const[postList, setPostList] = useState([]);
+  const [postsData, setPostsData] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -39,11 +38,11 @@ export default function PostList() {
         if (!postUserData) {
           throw new Error("Something Went Worng");
         }
-        setPostList([...postUserData.data.result])
-       
-        postUserData
+        setPostsData([...postUserData.data.result]);
+
+        console.log("Post list", postUserData.data.result);
       } catch (error) {
-        console.log(error.message)
+        console.log(error.message);
       }
     })();
   }, []);
@@ -51,11 +50,11 @@ export default function PostList() {
   const handleComment = async () => {
     try {
       const body = {
-        comment
+        comment,
       };
       const response = await api.post.postComment(body);
       if (!response) throw new Error("Data not received");
-      if(!response.data.success) {
+      if (!response.data.success) {
         alert("Sign up failed", response.data.msg);
         return;
       }
@@ -63,7 +62,7 @@ export default function PostList() {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.item}>
@@ -71,63 +70,93 @@ export default function PostList() {
         <Avatar.Image size={40}></Avatar.Image>
         <View style={styles.txtInfoContainter}>
           <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-            {item.firstName ?? "Name"}
+            {`${item.owner.firstName} ${item.owner.lastName} ` ?? "Name"}
           </Text>
-          <Text style={{ fontSize: 10, marginTop: -4, color: "gray" }}>
-          {`Updated At: ${new Date(item.updatedAt).getFullYear()}/${
+          <Text style={{ fontSize: 10, marginTop: 2, color: "gray" }}>
+            {`Updated At: ${new Date(item.updatedAt).getFullYear()}/${
               new Date(item.updatedAt).getMonth() + 1
             }/${new Date(item.updatedAt).getDate()}`}
           </Text>
         </View>
-
-        
       </View>
       <View style={styles.postText}>
-        <Paragraph>
-        {item.content ?? "Add your story here"}
+        <Paragraph style={styles.postTitle}>
+          {item.title ?? "Add your story here"}
         </Paragraph>
+      </View>
+      <View style={styles.postText}>
+        <Paragraph>{item.content ?? "Add your story here"}</Paragraph>
+      </View>
+      <View style={styles.postText}>
+        <Paragraph>{`Landmark: ${item.landmark}` ?? "Add your story here"}</Paragraph>
+        <Paragraph>{`Address: ${item.location.line}` ?? "Add your story here"}</Paragraph>
       </View>
       <View style={styles.postImage}>
         <Image
           style={{ width: "100%", height: 250 }}
-          source={item.media ?? require("../Images/banner-small-garbage-day_402x-1.jpg")}
+          source={require("../Images/banner-small-garbage-day_402x-1.jpg")}
         />
-        
       </View>
-      <Text
-        style={{ fontWeight: "bold", marginVertical: 3, fontSize: 12 }}
+      <View
+        style={{
+          flexDirection: "row",
+          marginVertical: 10,
+          justifyContent: "space-between",
+        }}
       >
-        204 Upvotes
-      </Text>
+        <View style={{ flexDirection: "row" }}>
+          <Text
+            style={{ fontWeight: "bold", marginHorizontal: 5, fontSize: 14}}
+          >
+            {`${item.status.toUpperCase()}`}
+          </Text>
+          <Text
+            style={{ fontWeight: "bold", marginHorizontal: 5, fontSize: 14 }}
+          >
+            {`${item.category.title}`}
+          </Text>
+          <Text
+            style={{ fontWeight: "bold", marginHorizontal: 5, fontSize: 14 }}
+          >
+            {`${item.authority.authorityName}`}
+          </Text>
+        </View>
+        <View>
+          <Text
+            style={{ fontWeight: "bold", marginHorizontal: 5, fontSize: 14 }}
+          >
+            {`${item.votes.length} Votes`}
+          </Text>
+        </View>
+      </View>
       <View style={styles.btnContainer}>
         <Pressable style={styles.btnStyle}>
           <View style={{ flexDirection: "row" }}>
             <FontAwesom name="check-circle" size={22} color="#fff" />
-            <Text
-              style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}
-            >
+            <Text style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}>
               UpVote
             </Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.btnStyle, { marginLeft: 2 }]} onPress={() => refRBSheet.current.open()}  >
+        <Pressable
+          style={[styles.btnStyle, { marginLeft: 2 }]}
+          onPress={() => refRBSheet.current.open()}
+        >
           <View style={{ flexDirection: "row" }}>
             <FontAwesom name="comment" size={20} color="#fff" />
-            <Text
-              style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}
-            >
+            <Text style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}>
               Comment
             </Text>
           </View>
         </Pressable>
       </View>
     </View>
-  )
+  );
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={DATA}
+        data={postsData}
         renderItem={(itemData) => renderItem(itemData)}
         keyExtractor={(item, index) => index.toString()}
       />
@@ -168,12 +197,16 @@ export default function PostList() {
               justifyContent: "center",
               backgroundColor: "#fff",
             }}
-            onChangeText={(text)=> setComment(text)}
+            onChangeText={(text) => setComment(text)}
           />
-          <FontAwesom name="send" size={20} style={{ marginTop: 18 }} onPress={handleComment} />
+          <FontAwesom
+            name="send"
+            size={20}
+            style={{ marginTop: 18 }}
+            onPress={handleComment}
+          />
         </View>
       </RBSheet>
-      
     </SafeAreaView>
   );
 }
@@ -198,6 +231,11 @@ const styles = StyleSheet.create({
   },
   txtInfoContainter: {
     marginLeft: 7,
+  },
+  postTitle: {
+    marginTop: 10,
+    fontSize: 20,
+    fontWeight: "bold",
   },
   postText: {
     marginTop: 15,
