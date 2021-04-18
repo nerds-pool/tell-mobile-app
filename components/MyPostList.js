@@ -51,9 +51,9 @@ export default function PostList() {
             {`${item.owner.firstName} ${item.owner.lastName} ` ?? "Name"}
           </Text>
           <Text style={{ fontSize: 10, marginTop: 2, color: "gray" }}>
-            {`Updated At: ${new Date(item.updatedAt).getFullYear()}/${
-              new Date(item.updatedAt).getMonth() + 1
-            }/${new Date(item.updatedAt).getDate()}`}
+            {`Updated At: ${new Date(item.createdAt).getFullYear()}/${
+              new Date(item.createdAt).getMonth() + 1
+            }/${new Date(item.createdAt).getDate()}`}
           </Text>
         </View>
       </View>

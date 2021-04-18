@@ -2,8 +2,8 @@ import axios from "axios";
 import { getValueFor, save } from "./helpers/sec-storage";
 
 const Http = axios.create({
-  //  baseURL: "https://tell-lk.netlify.app/.netlify/functions/api",
-  baseURL: "http://192.168.8.104:9000/.netlify/functions/api",
+   baseURL: "https://tell-lk.netlify.app/.netlify/functions/api",
+  // baseURL: "http://192.168.8.104:9000/.netlify/functions/api",
   timeout: 10000,
 });
 

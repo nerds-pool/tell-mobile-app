@@ -40,9 +40,9 @@ const Post = ({ data, onUpdate }) => {
             {`${data.owner.firstName} ${data.owner.lastName} ` ?? "Name"}
           </Text>
           <Text style={{ fontSize: 10, marginTop: 2, color: "gray" }}>
-            {`Updated At: ${new Date(data.updatedAt).getFullYear()}/${
-              new Date(data.updatedAt).getMonth() + 1
-            }/${new Date(data.updatedAt).getDate()}`}
+            {`Updated At: ${new Date(data.createdAt).getFullYear()}/${
+              new Date(data.createdAt).getMonth() + 1
+            }/${new Date(data.createdAt).getDate()}`}
           </Text>
         </View>
       </View>
