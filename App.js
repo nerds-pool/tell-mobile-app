@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import "react-native-gesture-handler";
@@ -18,7 +17,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Feeds from "./src/MainSrc/Feeds";
 import MyFeed from "./src/MainSrc/MyFeed";
 import AddFeeds from "./src/MainSrc/AddFeeds";
-import TakePhoto from "./src/MainSrc/TakePhoto";
+
 
 const Stack = createStackNavigator();
 
@@ -97,7 +96,7 @@ function MainNavigator() {
         <Stack.Screen name="Edit Profile" component={EditProfileScreen} />
         <Stack.Screen name="My Post" component={MyFeed} />
         <Stack.Screen name="Add Feed" component={AddFeeds} />
-        <Stack.Screen name="Take Photo" component={TakePhoto} />
+        
       </Stack.Navigator>
   );
 }

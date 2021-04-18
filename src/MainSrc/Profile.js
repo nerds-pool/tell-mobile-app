@@ -1,14 +1,18 @@
 import React from "react";
-import { View, Button, StyleSheet, SafeAreaView, Pressable } from "react-native";
+import { View, StyleSheet, SafeAreaView, Pressable, Dimensions } from "react-native";
 import {
   Avatar,
   Title,
   Caption,
   Text,
   TouchableRipple,
+  
 } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesom from "react-native-vector-icons/FontAwesome";
+
+const { width: WINDOW_WIDTH, height: WINDOW_HEIGHT } = Dimensions.get("window");
+
 
 export default function Profile({ navigation }) {
 
@@ -79,7 +83,7 @@ export default function Profile({ navigation }) {
           </View>
         </View>
 
-        <View style={styles.menuWrapper}>
+        {/* <View style={styles.menuWrapper}>
           <Pressable onPress={()=> navigation.navigate('My Post')}>
             <View style={styles.menuItem}>
               <Icon name="image" color="#8E0D37" size={25} />
@@ -97,7 +101,7 @@ export default function Profile({ navigation }) {
               <Text style={styles.menuItemText}>Settings</Text>
             </View>
           </TouchableRipple>
-        </View>
+        </View> */}
       
     </SafeAreaView>
   );

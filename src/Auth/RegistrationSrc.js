@@ -138,7 +138,8 @@ const RegistrationSrc = ({ navigation }) => {
 
         <Pressable
           style={[styles.btnStyle, { marginTop: 50 }]}
-          onPress={handleFetch}
+          //onPress={handleFetch}
+          onPress={()=> navigation.navigate("OTP Code")}
         >
           <Text style={[styles.txtStyle, { fontWeight: "bold" }]}>
             Register

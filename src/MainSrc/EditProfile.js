@@ -13,7 +13,6 @@ import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
 import * as ImagePicker from "expo-image-picker";
-import Constants from "expo-constants";
 
 export default function EditProfile() {
   const [image, setImage] = useState(null);
@@ -52,9 +51,7 @@ export default function EditProfile() {
         <Text style={styles.panelTitle}>Upload Photo</Text>
         <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
       </View>
-      <TouchableOpacity style={styles.panelButton}>
-        <Text style={styles.panelButtonTitle}>Take Photo</Text>
-      </TouchableOpacity>
+      
       <TouchableOpacity style={styles.panelButton} onPress={pickImage}>
         <Text style={styles.panelButtonTitle}>Choose from Library</Text>
       </TouchableOpacity>

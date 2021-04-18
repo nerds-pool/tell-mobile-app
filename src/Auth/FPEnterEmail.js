@@ -28,7 +28,7 @@ const FPEnterEmail = ({ navigation }) => {
       </Text>
       <TextInput
         placeholder="Email"
-        secureTextEntry
+        
         style={[styles.txtInput, { marginTop: 75 }]}
       />
 

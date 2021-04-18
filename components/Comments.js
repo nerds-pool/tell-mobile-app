@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
   SafeAreaView,
   View,
@@ -7,42 +7,62 @@ import {
   Text,
   StatusBar,
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import { Avatar, Paragraph } from "react-native-paper";
+import api from "../api";
 
 const DATA = [
   {
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
     title: "First Item",
   },
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb2fd8ba",
-    title: "First Item",
-  },
-  
+
 ];
 
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <View style={{ flexDirection: "row" }}>
-      <Avatar.Image size={40}></Avatar.Image>
-      <View style={styles.infoContainer}>
-        <Text>Kavinda Nirushana</Text>
-        <Text style={{ fontSize: 10, marginTop: -4, color: "gray" }}>
-          10:20pm
-        </Text>
-      </View>
-    </View>
-    <View style={styles.comment}>
-      <Paragraph>Hi this is an post sfgrjgfnht</Paragraph>
-    </View>
-  </View>
-);
 
 const App = () => {
-  const renderItem = ({ item }) => <Item title={item.title} />;
 
+  
+  const[userComments ,setUserComments] = useState([]);
+
+  const renderItem = ({ item }) =>  (
+    <View style={styles.item}>
+      <View style={{ flexDirection: "row" }}>
+        <Avatar.Image size={40}></Avatar.Image>
+        <View style={styles.infoContainer}>
+          <Text>{item.firstName ?? "Name"}</Text>
+          <Text style={{ fontSize: 10, marginTop: -4, color: "gray" }}>
+          {`Updated At: ${new Date(item.updatedAt).getFullYear()}/${
+                new Date(item.updatedAt).getMonth() + 1
+              }/${new Date(item.updatedAt).getDate()}`}
+          </Text>
+        </View>
+      </View>
+      <View style={styles.comment}>
+        <Paragraph>{item.comment}</Paragraph>
+      </View>
+    </View>
+  );
+
+  useEffect(() => {
+    async function fetchComments() {
+      try {
+        const comments = await api.get.getComments();
+        if (!comments) {
+          throw new Error("Something Went Worng");
+        }
+        setUserComments([...comments.data.result]);
+        console.log("Res: ", comments.data);
+        return comments;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchComments();
+  }, []);
+
+  
   return (
+    
     <SafeAreaView style={styles.container}>
       <FlatList
         data={DATA}

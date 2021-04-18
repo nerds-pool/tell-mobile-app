@@ -129,13 +129,13 @@ const LoginSrc = ({ navigation }) => {
           ]}
         >
           Forgot Password?
-          <Text onPress={() => handleDelete("Name")}>Click here</Text>
+          <Text onPress={() => navigation.navigate("Forget Password")}>Click here</Text>
         </Text>
 
         <Pressable
           style={[styles.btnStyle, { marginTop: 90 }]}
-          // onLongPress={() => handleGet("Name")}
-          onPress={handleFetch}
+          //onPress={handleFetch}
+          onPress={()=> navigation.navigate("Feeds")}
         >
           <Text style={[styles.txtStyle, { fontWeight: "bold" }]}>Login</Text>
         </Pressable>
@@ -147,7 +147,7 @@ const LoginSrc = ({ navigation }) => {
           ]}
         >
           Don't Have an Account?
-          <Text onPress={() => handleSave("Kavinda Nirushana")}>
+          <Text onPress={() => handleSave("Register")}>
             {/*  */}
             Register Now
           </Text>

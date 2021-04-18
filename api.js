@@ -2,8 +2,8 @@ import axios from "axios";
 import {getValueFor, save } from "./helpers/sec-storage"
 
 const Http = axios.create({
-  // baseURL: "https://tell-lk.netlify.app/.netlify/functions/api",
-  baseURL: "http://192.168.8.102:9000/.netlify/functions/api",
+   baseURL: "https://tell-lk.netlify.app/.netlify/functions/api",
+  //baseURL: "http://192.168.8.102:9000/.netlify/functions/api",
   timeout: 10000,
 });
 
@@ -53,11 +53,15 @@ const api = {
     postSignin: (signinbody) => Http.post("/auth/signin", signinbody),
     postAddComplaint: (body) => Http.post("/complaints/new", body),
     postImage: (body) => (config) => Http.post("/file/add", body, config),
-    postRefresh: (body) => Http.post("/auth/refresh", body)
+    postRefresh: (body) => Http.post("/auth/refresh", body),
+    postProfileUpdate: (body) => Http.post("", body),
+    postComment: (body) => Http.post("", body),
   },
 
   get: {
     getPostList: (userId) => Http.get(`/complaints/get/all/${userId}`),
+    getUserPostList: (userId) => Http.get(`/complaints/${userId}`),
+    getComments: () => Http.get(),
   },
 
   put: {},

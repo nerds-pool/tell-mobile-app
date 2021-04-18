@@ -9,7 +9,6 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import { Avatar } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import api from "../../api";
@@ -124,7 +123,7 @@ const AddFeeds = ({ navigation }) => {
             <TextInput
               value={content}
               style={styles.txtInput}
-              placeholder="Add your content here"
+              placeholder="Add your story here"
               underlineColorAndroid="transparent"
               numberOfLines={3}
               multiline={true}
