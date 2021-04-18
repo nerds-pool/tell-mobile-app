@@ -1,37 +1,21 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   SafeAreaView,
   View,
   FlatList,
   StyleSheet,
   Text,
-  StatusBar,
   Image,
 } from "react-native";
 import FontAwesom from "react-native-vector-icons/FontAwesome";
 import { Avatar, Paragraph } from "react-native-paper";
-
-import {
-  MenuProvider,
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from "react-native-popup-menu"; // 0.8.0
-import { getValueFor } from "../helpers/sec-storage"
+import { Pressable } from "react-native";
+import { getValueFor } from "../helpers/sec-storage";
 import api from "../api";
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-    name: "Kavinda Nirushana",
-  },
-];
-
-
 export default function PostList() {
-  const[postList, setPostList] = useState([]);
+  const refRBSheet = useRef();
+  const [postsData, setPostsData] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -41,75 +25,115 @@ export default function PostList() {
         if (!postUserData) {
           throw new Error("Something Went Worng");
         }
-        setPostList([...postUserData.data.result])
-        
-        return postUserData
+        setPostsData([...postUserData.data.result]);
+
+        console.log("Post list", postUserData.data.result);
       } catch (error) {
-        console.log(error.message)
+        console.log(error.message);
       }
     })();
   }, []);
 
-  const renderItem = ({item}) =>(
+  const renderItem = ({ item }) => (
     <View style={styles.item}>
       <View style={styles.infoContainter}>
         <Avatar.Image size={40}></Avatar.Image>
         <View style={styles.txtInfoContainter}>
           <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-            {item.first ?? 'Name'}
+            {`${item.owner.firstName} ${item.owner.lastName} ` ?? "Name"}
           </Text>
-          <Text style={{ fontSize: 10, marginTop: -4, color: "gray" }}>
-          {`Updated At: ${new Date(item.updatedAt).getFullYear()}/${
+          <Text style={{ fontSize: 10, marginTop: 2, color: "gray" }}>
+            {`Updated At: ${new Date(item.updatedAt).getFullYear()}/${
               new Date(item.updatedAt).getMonth() + 1
             }/${new Date(item.updatedAt).getDate()}`}
           </Text>
         </View>
-
-        <MenuProvider style={styles.incontainer}>
-          <View style={{ marginTop: 20 }}>
-            <Menu>
-              <MenuTrigger>
-                <FontAwesom
-                  name="ellipsis-v"
-                  size={16}
-                  style={{ justifyContent: "center", width: 20 }}
-                />
-              </MenuTrigger>
-              <MenuOptions>
-                <MenuOption
-                  onSelect={() => alert(`Delete`)}
-                  text="Delete"
-                />
-              </MenuOptions>
-            </Menu>
-          </View>
-        </MenuProvider>
+      </View>
+      <View style={styles.postText}>
+        <Paragraph style={styles.postTitle}>
+          {item.title ?? "Add your story here"}
+        </Paragraph>
+      </View>
+      <View style={styles.postText}>
+        <Paragraph>{item.content ?? "Add your story here"}</Paragraph>
       </View>
       <View style={styles.postText}>
         <Paragraph>
-          {item.content ?? "User Story"}
+          {`Landmark: ${item.landmark}` ?? "Add your story here"}
+        </Paragraph>
+        <Paragraph>
+          {`Address: ${item.location.line}` ?? "Add your story here"}
         </Paragraph>
       </View>
       <View style={styles.postImage}>
         <Image
           style={{ width: "100%", height: 250 }}
-          source={ item.media ?? require("../Images/banner-small-garbage-day_402x-1.jpg")}
+          source={require("../Images/banner-small-garbage-day_402x-1.jpg")}
         />
-        
       </View>
-      <View style={{padding: 10}}></View>
+      <View
+        style={{
+          flexDirection: "row",
+          marginVertical: 10,
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={{ flexDirection: "row" }}>
+          <Text
+            style={{ fontWeight: "bold", marginHorizontal: 5, fontSize: 14 }}
+          >
+            {`${item.status.toUpperCase()}`}
+          </Text>
+          <Text
+            style={{ fontWeight: "bold", marginHorizontal: 5, fontSize: 14 }}
+          >
+            {`${item.category.title}`}
+          </Text>
+          <Text
+            style={{ fontWeight: "bold", marginHorizontal: 5, fontSize: 14 }}
+          >
+            {`${item.authority.authorityName}`}
+          </Text>
+        </View>
+        <View>
+          <Text
+            style={{ fontWeight: "bold", marginHorizontal: 5, fontSize: 14 }}
+          >
+            {`${item.votes.length} Votes`}
+          </Text>
+        </View>
+      </View>
+      <View style={styles.btnContainer}>
+        <Pressable style={styles.btnStyle}>
+          <View style={{ flexDirection: "row" }}>
+            <FontAwesom name="check-circle" size={22} color="#fff" />
+            <Text style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}>
+              UpVote
+            </Text>
+          </View>
+        </Pressable>
+        <Pressable
+          style={[styles.btnStyle, { marginLeft: 2 }]}
+          onPress={() => refRBSheet.current.open()}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <FontAwesom name="comment" size={20} color="#fff" />
+            <Text style={{ color: "#fff", fontWeight: "bold", marginLeft: 5 }}>
+              Comment
+            </Text>
+          </View>
+        </Pressable>
+      </View>
     </View>
-  )
+  );
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={DATA}
+        data={postsData}
         renderItem={(itemData) => renderItem(itemData)}
         keyExtractor={(item, index) => index.toString()}
       />
-    
-      
     </SafeAreaView>
   );
 }
@@ -117,7 +141,7 @@ export default function PostList() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    // marginTop: StatusBar.currentHeight || 0,
   },
   item: {
     backgroundColor: "#fff",
@@ -134,6 +158,11 @@ const styles = StyleSheet.create({
   },
   txtInfoContainter: {
     marginLeft: 7,
+  },
+  postTitle: {
+    marginTop: 10,
+    fontSize: 20,
+    fontWeight: "bold",
   },
   postText: {
     marginTop: 15,
