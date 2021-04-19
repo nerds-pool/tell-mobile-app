@@ -65,7 +65,7 @@ export default class App extends React.Component {
         alert("Hey! You might want to enable Camera in your phone settings.");
       }
     } catch (err) {
-      console.log("err", err);
+      console.error("err", err);
     }
 
     if (Platform.OS === "android") {
@@ -78,7 +78,7 @@ export default class App extends React.Component {
           alert("Hey! You might want to enable Camera in your phone settings.");
         }
       } catch (err) {
-        console.log("err", err);
+        console.error("err", err);
       }
     }
   }

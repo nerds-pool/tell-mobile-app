@@ -21,22 +21,6 @@ const LoginSrc = ({ navigation }) => {
     }
   };
 
-  // const handleGet = async (key) => {
-  //   try {
-  //     await getValueFor(key);
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  //};
-
-  // const handleDelete = async (key) => {
-  //   try {
-  //     await deleteValueFor(key);
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  // };
-
   const handleFetch = async () => {
     try {
       const signinbody = {

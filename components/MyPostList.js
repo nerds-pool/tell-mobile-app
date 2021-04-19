@@ -27,7 +27,10 @@ export default function PostList() {
         }
         setPostsData([...postUserData.data.result]);
       } catch (error) {
-        console.log(error.message);
+        alert(
+          "Something went wrong while loading your complaints. Please check your internet connection..."
+        );
+        console.error(error.message);
       } finally {
         setLoading(false);
       }

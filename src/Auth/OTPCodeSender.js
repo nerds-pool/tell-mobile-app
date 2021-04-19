@@ -24,7 +24,6 @@ const OTPCodeSender = ({ navigation, route }) => {
   const handleOtpCheck = async () => {
     try {
       const isValid = params.otp === internalVal.toString();
-      console.log("isValid", isValid);
       if (!isValid) {
         alert("Otp is not valid");
         return;
@@ -38,8 +37,8 @@ const OTPCodeSender = ({ navigation, route }) => {
       if (!response) throw new Error("Account activation failed");
       navigation.replace("Login");
     } catch (error) {
-      console.log(error);
-      alert("Activation failed", error.response.message ?? error.messge);
+      alert("Activation failed! Please enter a valid OTP code...");
+      console.error(error);
     }
   };
 

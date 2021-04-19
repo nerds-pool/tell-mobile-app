@@ -23,7 +23,8 @@ const CommentsComp = ({ complaintId, comments, onUpdate }) => {
       setNewComment("");
       onUpdate();
     } catch (error) {
-      console.log("Error at post comment ", error.response ?? error.message);
+      alert("Error occured while posting the commnet");
+      console.error("Error at post comment ", error.response ?? error.message);
     }
   };
 

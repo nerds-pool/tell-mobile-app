@@ -23,7 +23,7 @@ const Post = ({ data, onUpdate }) => {
         throw new Error("Something went wrong");
       onUpdate();
     } catch (error) {
-      console.log(error.message);
+      console.error("Upvote", error.message);
     }
   };
 
@@ -120,7 +120,6 @@ const Post = ({ data, onUpdate }) => {
           </View>
         </Pressable>
       </View>
-      {console.log("Comments in posts", data.comments)}
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}

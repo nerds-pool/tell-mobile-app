@@ -26,12 +26,7 @@ export const save = async (key, value) => {
 export const getValueFor = async (key) => {
   try {
     let result = await SecureStore.getItemAsync(key);
-    if (result) {
-      console.log("Found : " + result);
-      return result;
-    } else {
-      console.log("Result Not Found");
-    }
+    return result;
   } catch (error) {
     console.error(error.message);
   }
@@ -40,12 +35,7 @@ export const getValueFor = async (key) => {
 // Delete
 export const deleteValueFor = async (key) => {
   try {
-    let result = await SecureStore.deleteItemAsync(key);
-    if (result) {
-      console.log("Deleted : " + result);
-    } else {
-      console.log("Not Found");
-    }
+    await SecureStore.deleteItemAsync(key);
   } catch (error) {
     console.error(error.message);
   }

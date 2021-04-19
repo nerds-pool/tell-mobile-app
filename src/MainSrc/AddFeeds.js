@@ -48,7 +48,6 @@ const AddFeeds = ({ navigation }) => {
     (async () => {
       try {
         const response = await api.get.filterData();
-        console.log("Filter Data", response.data.result);
         response &&
           setFilterData((prevState) => ({
             ...prevState,
@@ -56,10 +55,8 @@ const AddFeeds = ({ navigation }) => {
             authorities: response.data.result.authorities,
           }));
       } catch (error) {
-        console.log(
-          "Error while fetching filter data",
-          error.response ?? error.message
-        );
+        alert("Couldn't fetch categories and authorities! " + error.message);
+        console.error(error.message);
       }
     })();
   }, []);
@@ -72,8 +69,6 @@ const AddFeeds = ({ navigation }) => {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       setImage(result);
@@ -122,7 +117,6 @@ const AddFeeds = ({ navigation }) => {
           return;
         }
         media = response.data.result.filename;
-        console.log("file name", media);
       }
 
       const complaintBody = {
@@ -142,12 +136,12 @@ const AddFeeds = ({ navigation }) => {
         media,
       };
 
-      console.log("Complaint", complaintBody);
-
       const complaintRes = await api.post.postAddComplaint(complaintBody);
       if (complaintRes && !complaintRes.data.success)
         throw new Error("Can't post complaint, Error occured");
-      console.log("Post created", complaintRes.data.result);
+      alert(
+        "Your complaint has been posted. You will receive a confirmation email"
+      );
     } catch (error) {
       console.error(
         "Error",

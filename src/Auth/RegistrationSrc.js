@@ -70,13 +70,12 @@ const RegistrationSrc = ({ navigation }) => {
         alert("Sign up failed", response.data.msg);
         return;
       }
-      console.log("Res:", response.data);
       navigation.replace("OTP Code", {
         otp: response.data.result.otp,
         token: response.data.result.signupToken,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
