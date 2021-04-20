@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -6,6 +6,7 @@ import {
   Image,
   Dimensions,
   KeyboardAvoidingView,
+  Pressable,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { TextInput } from "react-native-gesture-handler";
@@ -13,6 +14,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import api from "../../api";
 import { getValueFor } from "../../helpers/sec-storage";
+import { AntDesign } from "@expo/vector-icons";
 
 const { width: WINDOW_WIDTH } = Dimensions.get("window");
 
@@ -30,6 +32,29 @@ const AddFeeds = ({ navigation }) => {
   const [district, setDistrict] = useState("");
   const [category, setCategory] = useState("");
   const [authority, setAuthority] = useState("");
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "Post Complaint",
+      headerRight: () => (
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: 70,
+            marginRight: 2,
+          }}
+        >
+          <Icon
+            name="send"
+            size={23}
+            style={[styles.icons]}
+            onPress={handleSubmit}
+          />
+        </View>
+      ),
+    });
+  }, [navigation]);
 
   useEffect(() => {
     (async () => {
@@ -262,13 +287,12 @@ const AddFeeds = ({ navigation }) => {
             size={30}
             style={styles.icons}
             onPress={pickImage}
-          /> */}
           <Icon
             name="send"
             size={30}
             style={[styles.icons, { marginLeft: "80%" }]}
             onPress={handleSubmit}
-          />
+          /> */}
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -318,7 +342,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   icons: {
-    marginTop: 5,
+    // marginTop: 5,
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 20,
