@@ -118,11 +118,11 @@ export default function PostList() {
           >
             {`${item.category.title}`}
           </Text>
-          <Text
+          {/* <Text
             style={{ fontWeight: "bold", marginHorizontal: 5, fontSize: 14 }}
           >
             {`${item.authority.authorityName}`}
-          </Text>
+          </Text> */}
         </View>
         <View>
           <Text

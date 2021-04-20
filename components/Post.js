@@ -7,6 +7,7 @@ import { Pressable } from "react-native";
 import Comments from "../components/Comments";
 import api from "../api";
 import { getValueFor } from "../helpers/sec-storage";
+import { Dimensions } from "react-native";
 
 const Post = ({ data, onUpdate }) => {
   const refRBSheet = useRef();
@@ -99,6 +100,7 @@ const Post = ({ data, onUpdate }) => {
           flexDirection: "row",
           marginVertical: 10,
           justifyContent: "space-between",
+          maxWidth: Dimensions.get("window").width - 60
         }}
       >
         <View style={{ flexDirection: "row" }}>
@@ -112,11 +114,11 @@ const Post = ({ data, onUpdate }) => {
           >
             {`${data.category.title}`}
           </Text>
-          <Text
+          {/* <Text
             style={{ fontWeight: "bold", marginHorizontal: 5, fontSize: 14 }}
           >
             {`${data.authority.authorityName}`}
-          </Text>
+          </Text> */}
         </View>
         <View>
           <Text
