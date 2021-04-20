@@ -58,12 +58,12 @@ const Post = ({ data, onUpdate }) => {
           {`Address: ${data.location.line}` ?? "Add your story here"}
         </Paragraph>
       </View>
-      <View style={styles.postImage}>
+      {/* <View style={styles.postImage}>
         <Image
           style={{ width: "100%", height: 250 }}
           source={require("../Images/banner-small-garbage-day_402x-1.jpg")}
         />
-      </View>
+      </View> */}
       <View
         style={{
           flexDirection: "row",
@@ -73,7 +73,7 @@ const Post = ({ data, onUpdate }) => {
       >
         <View style={{ flexDirection: "row" }}>
           <Text
-            style={{ fontWeight: "bold", marginHorizontal: 5, fontSize: 14 }}
+            style={{ fontWeight: "bold", marginHorizontal: 12, fontSize: 14 }}
           >
             {`${data.status.toUpperCase()}`}
           </Text>

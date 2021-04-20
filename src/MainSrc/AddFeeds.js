@@ -242,8 +242,8 @@ const AddFeeds = ({ navigation }) => {
             />
           </View>
         </View>
-        <View style={{ marginTop: 20, marginRight: 150 }}>
-          {image && (
+        <View style={{ marginTop: 20 }}>
+          {/* {image && (
             <Image
               source={{ uri: image.uri }}
               style={{ width: 200, height: 200 }}
@@ -262,11 +262,11 @@ const AddFeeds = ({ navigation }) => {
             size={30}
             style={styles.icons}
             onPress={pickImage}
-          />
+          /> */}
           <Icon
             name="send"
             size={30}
-            style={[styles.icons, { marginLeft: "56%" }]}
+            style={[styles.icons, { marginLeft: "80%" }]}
             onPress={handleSubmit}
           />
         </View>
