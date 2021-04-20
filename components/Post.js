@@ -34,6 +34,13 @@ const Post = ({ data, onUpdate }) => {
           {data.title ?? "Add your story here"}
         </Paragraph>
       </View>
+      <View
+        style={{
+          borderBottomColor: "gray",
+          borderBottomWidth: 1,
+          marginTop: 3,
+        }}
+      />
       <View style={styles.infoContainter}>
         <View style={styles.txtInfoContainter}>
           <Text style={{ fontSize: 16, fontWeight: "bold" }}>
@@ -46,10 +53,24 @@ const Post = ({ data, onUpdate }) => {
           </Text>
         </View>
       </View>
+      <View
+        style={{
+          borderBottomColor: "light-gray",
+          borderBottomWidth: 3,
+          marginTop: 10,
+        }}
+      />
 
       <View style={styles.postText}>
         <Paragraph>{data.content ?? "Add your story here"}</Paragraph>
       </View>
+      <View
+        style={{
+          borderBottomColor: "light-gray",
+          borderBottomWidth: 3,
+          marginTop: 10,
+        }}
+      />
       <View style={styles.postText}>
         <Paragraph>
           {`Landmark: ${data.landmark}` ?? "Add your story here"}
@@ -64,6 +85,7 @@ const Post = ({ data, onUpdate }) => {
           source={require("../Images/banner-small-garbage-day_402x-1.jpg")}
         />
       </View> */}
+      
       <View
         style={{
           flexDirection: "row",
@@ -162,6 +184,15 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 8,
     marginHorizontal: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   title: {
     fontSize: 32,
@@ -172,7 +203,7 @@ const styles = StyleSheet.create({
   },
   txtInfoContainter: {
     marginLeft: 12,
-    marginTop: 20,
+    marginTop: 10,
   },
   postTitle: {
     marginTop: 10,

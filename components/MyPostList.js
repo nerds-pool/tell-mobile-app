@@ -48,6 +48,13 @@ export default function PostList() {
           {item.title ?? "Add your story here"}
         </Paragraph>
       </View>
+      <View
+        style={{
+          borderBottomColor: "gray",
+          borderBottomWidth: 1,
+          marginTop: 5,
+        }}
+      />
       <View style={styles.infoContainter}>
         <View style={styles.txtInfoContainter}>
           <Text style={{ fontSize: 16, fontWeight: "bold" }}>
@@ -60,10 +67,25 @@ export default function PostList() {
           </Text>
         </View>
       </View>
+      <View
+        style={{
+          borderBottomColor: "light-gray",
+          borderBottomWidth: 3,
+          marginTop: 10,
+        }}
+      />
+      
 
       <View style={styles.postText}>
         <Paragraph>{item.content ?? "Add your story here"}</Paragraph>
       </View>
+      <View
+        style={{
+          borderBottomColor: "light-gray",
+          borderBottomWidth: 3,
+          marginTop: 10,
+        }}
+      />
       <View style={styles.postText}>
         <Paragraph>
           {`Landmark: ${item.landmark}` ?? "Add your story here"}
@@ -72,12 +94,19 @@ export default function PostList() {
           {`Address: ${item.location.line}` ?? "Add your story here"}
         </Paragraph>
       </View>
-      <View style={styles.postImage}>
+      {/* <View style={styles.postImage}>
         <Image
           style={{ width: "100%", height: 250 }}
           source={require("../Images/banner-small-garbage-day_402x-1.jpg")}
         />
-      </View>
+      </View> */}
+      <View
+        style={{
+          borderBottomColor: "light-gray",
+          borderBottomWidth: 3,
+          marginTop: 10,
+        }}
+      />
       <View
         style={{
           flexDirection: "row",
@@ -135,6 +164,15 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 8,
     marginHorizontal: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   title: {
     fontSize: 32,
