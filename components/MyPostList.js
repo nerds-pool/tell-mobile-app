@@ -48,13 +48,6 @@ export default function PostList() {
           {item.title ?? "Add your story here"}
         </Paragraph>
       </View>
-      <View
-        style={{
-          borderBottomColor: "gray",
-          borderBottomWidth: 1,
-          marginTop: 5,
-        }}
-      />
       <View style={styles.infoContainter}>
         <View style={styles.txtInfoContainter}>
           <Text style={{ fontSize: 16, fontWeight: "bold" }}>
@@ -69,9 +62,9 @@ export default function PostList() {
       </View>
       <View
         style={{
-          borderBottomColor: "light-gray",
-          borderBottomWidth: 3,
-          marginTop: 10,
+          borderBottomColor: "#ccc",
+          borderBottomWidth: 1,
+          marginTop: 5,
         }}
       />
       
@@ -81,9 +74,9 @@ export default function PostList() {
       </View>
       <View
         style={{
-          borderBottomColor: "light-gray",
-          borderBottomWidth: 3,
-          marginTop: 10,
+          borderBottomColor: "#ccc",
+          borderBottomWidth: 1,
+          marginTop: 5,
         }}
       />
       <View style={styles.postText}>
@@ -102,9 +95,9 @@ export default function PostList() {
       </View> */}
       <View
         style={{
-          borderBottomColor: "light-gray",
-          borderBottomWidth: 3,
-          marginTop: 10,
+          borderBottomColor: "#ccc",
+          borderBottomWidth: 1,
+          marginTop: 5,
         }}
       />
       <View

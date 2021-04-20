@@ -36,9 +36,8 @@ const Post = ({ data, onUpdate }) => {
       </View>
       <View
         style={{
-          borderBottomColor: "gray",
-          borderBottomWidth: 1,
           marginTop: 3,
+          marginHorizontal: 12,
         }}
       />
       <View style={styles.infoContainter}>
@@ -55,9 +54,10 @@ const Post = ({ data, onUpdate }) => {
       </View>
       <View
         style={{
-          borderBottomColor: "light-gray",
-          borderBottomWidth: 3,
+          borderBottomColor: "#ccc",
+          borderBottomWidth: 1,
           marginTop: 10,
+          marginHorizontal: 12,
         }}
       />
 
@@ -66,9 +66,10 @@ const Post = ({ data, onUpdate }) => {
       </View>
       <View
         style={{
-          borderBottomColor: "light-gray",
-          borderBottomWidth: 3,
+          borderBottomColor: "#ccc",
+          borderBottomWidth: 1,
           marginTop: 10,
+          marginHorizontal: 12,
         }}
       />
       <View style={styles.postText}>
@@ -85,7 +86,14 @@ const Post = ({ data, onUpdate }) => {
           source={require("../Images/banner-small-garbage-day_402x-1.jpg")}
         />
       </View> */}
-      
+      <View
+        style={{
+          borderBottomColor: "#ccc",
+          borderBottomWidth: 1,
+          marginTop: 10,
+          marginHorizontal: 12,
+        }}
+      />
       <View
         style={{
           flexDirection: "row",
@@ -212,8 +220,8 @@ const styles = StyleSheet.create({
   },
   postText: {
     marginTop: 15,
-    marginLeft: 12,
     width: "85%",
+    marginHorizontal: 12,
   },
   postImage: {
     marginTop: 15,
